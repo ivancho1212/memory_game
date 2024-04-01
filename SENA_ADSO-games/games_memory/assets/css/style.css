@@ -1,0 +1,176 @@
+
+@font-face {
+  font-family: Press_Start_2p;
+  src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf');
+}
+body {
+  background-image: url('../img/background/wallpaperbetter.com_2560x1600.jpg');
+  background-size:cover; /* Ajusta la imagen para que cubra todo el contenedor */
+  background-position: center; 
+  font-family: Press_Start_2p;
+  font-size: large;
+  text-transform: uppercase !important;
+
+}
+.modal-body{
+  background-image: url('../img/background/wallpaperbetter.com_2560x1600.jpg');
+}
+.titleGames{
+  font-size: 4em;
+  color: #ffd700;
+  text-shadow: 1px 10px 7px #000;
+  margin: 20px;
+  
+}
+@keyframes shimmer {
+  0% {
+    background-position: -1000%;
+  }
+  100% {
+    background-position: 1000%;
+  }
+}
+
+.welcome {
+  font-size: 2em;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffd700 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text; /* Para navegadores webkit */
+  animation: shimmer 5s infinite linear;
+  
+}
+
+.selecLevel{
+  color: transparent;
+  background-image: linear-gradient(to right, #ffd700, #ffd700 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text; /* Para navegadores webkit */
+  animation: shimmer 5s infinite linear;
+  margin-bottom: 30px;
+}
+.iva{
+  font-size: 0.76em;
+  color: #ffd700 !important;
+  text-shadow: 1px 10px 7px #000;
+}
+.gold-font {
+  color: #ffd700 !important; /* Dorado */
+  text-shadow: 1px 1px 2px #000; /* Añade sombra para un efecto de profundidad */
+}
+
+#btn_start {
+  background: #000;
+  border: solid 2px white;
+  font-size: 1em;
+  border-radius: 10px;
+  margin: 1% auto;
+  color: #ffd700;
+  box-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #ff007f; /* Efecto de neón */
+}
+#btn_easy {
+  background: #000;
+  border: solid 2px white !important;
+  border-radius: 5px;
+  color: #ffd700;
+  box-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #ff007f; /* Efecto de neón */
+}
+#btn_half {
+  background: #000;
+  border: solid 2px white !important;
+  border-radius: 5px;
+  color: #ffd700;
+  box-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #ff007f; /* Efecto de neón */
+}
+#btn_hard {
+  background: #000;
+  border: solid 2px white !important;
+  border-radius: 5px;
+  color: #ffd700;
+  box-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #ff007f; /* Efecto de neón */
+}
+#btn_start:hover {
+  background: #ff007f;
+  background: linear-gradient(0deg, #ff007f 0%, rgba(0, 0, 0, 1) 100%);
+  border-radius:10px;
+}
+#btn_easy:hover {
+  background: rgb(0, 96, 0);
+  background: linear-gradient(0deg, rgba(0, 96, 0, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  border-radius:10px;
+  
+}
+#btn_half:hover {
+  background: rgb(15, 68, 224);
+  background: linear-gradient(0deg, rgb(15, 68, 225) 0%, rgba(0, 0, 0, 1) 100%);
+  border-radius:10px;
+  
+}
+#btn_hard:hover {
+  background: rgb(208, 44, 11);
+  background: linear-gradient(0deg, rgb(208, 44, 12) 0%, rgba(0, 0, 0, 1) 100%);
+  border-radius:10px;
+  
+}
+.contCard{
+  cursor: pointer;
+}
+
+.card-size {
+  width: 150px;
+  border: solid 4px white !important;
+  box-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #ff007f; /* Efecto de neón */
+  border-radius: 15px;
+  
+}
+.back-face{
+border-radius: 15px;
+
+}
+.card-disappear {
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out; /* Agregar una transición suave */
+}
+#chronometerId label {
+  font-size: 2rem;
+  color: #ffd700 !important;
+  
+}
+.navbar-light{
+  background-color: #000 !important;
+}
+.navbar-light .navbar-brand {
+  color: #ffd700; 
+}
+
+.text-danger {
+  color: red !important;
+}
+.top_five{
+  font-size: 3.5em;
+  color: #ffd700;
+  text-shadow: 1px 10px 7px #000;
+  margin: 20px;
+  
+}
+.over{
+  font-size: 3.5em;
+  color: #ffd700;
+  text-shadow: 1px 10px 7px #000;
+  margin: 20px;
+}
+.n-score{
+  font-size: 1.3em;
+  color: #ffd700;
+  text-shadow: 1px 10px 7px #000;
+  margin: 20px;
+  
+}
+.Close{
+  background-color: #ffd700;
+  font-size: 1.3em;
+  color: black;
+  border-radius: 4px;
+}
