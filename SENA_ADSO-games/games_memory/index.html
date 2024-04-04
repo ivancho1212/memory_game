@@ -3,7 +3,7 @@ Author:DIEGO CASALLAS
 Date:19/03/2024
 Description:Game index view
 -->
-<!--<!DOCTYPE html>-->
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -58,11 +58,11 @@ Description:Game index view
             <nav class="navbar navbar-light bg-light">
               <div class="container">
                 <div class="navbar-brand">
-                  <a class="dropdown-item Close" href="http://127.0.0.1:3000/games_memory/index.html">Close</a>
+                  <a class="dropdown-item Close" href="http://127.0.0.1:3004/games_memory/index.html">Close</a>
                 </div>
                 <div class="row" id="chronometerId">
                   <div class="col-2 mx-auto text-center d-none"><label for="">00</label></div>
-                  <div class="col-2 mx-auto text-center d-none"><label for="">00</label></div>
+                  <div class="col-2 mx-auto text-center"><label for="">00</label></div>
                   <div class="col-2 mx-auto text-center"><label for="">00</label></div>
                 </div>
                 <div class="progress col-6 mx-auto">
@@ -80,12 +80,6 @@ Description:Game index view
 
             <!-- GAME -->
             <div class="container" id="containerGame"></div>
-
-            <!-- GAME OVER MESSAGE -->
-            <div id="gameOverModal" style="display: none;">
-              <h2 class="text-center gold-font mt-4 over">GAME OVER</h2>
-              <p class="text-center gold-font mt-5 n-score">Better luck next time!</p>
-            </div>
 
             <!-- CONGRATULATIONS  -->
             <div id="congratsMessage" style="display: none;">
@@ -169,5 +163,8 @@ Description:Game index view
   <script src="assets/js/main.js"></script>
   <!--My class chronometer-->
   <script src="assets/js/Chronometer.js"></script>
+  
+  <!--My class storageGame-->
+  <script src="assets/js/storageGame.js"></script>
 
 </body>

@@ -69,17 +69,9 @@ function startGame(level) {
     // Crear el juego dentro del modal
     game = new Game(contId, level, progress, chronometer, speed, maxMilliseconds);
 
-    // Crear el cronómetro con el tiempo de advertencia
-    const warningTime = 30; // Cambia a 30 segundos
-    game.objChronometer = new Chronometer(chronometer, speed, maxMilliseconds, warningTime);
-
-    // Iniciar el juego y el cronómetro
-    game.objChronometer.startChronometer();
-    // Detener y reiniciar el cronómetro
-    game.objChronometer.clearChronometer();
-    game.objChronometer.startChronometer();
+    // Crear el cronómetro sin tiempo de advertencia
+    game.objChronometer = new Chronometer(chronometer, speed, maxMilliseconds);
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
     var btnInicio = document.getElementById("btnInicio");
@@ -151,12 +143,16 @@ function showTop5() {
         leaderboard.style.display = 'none'; // Ocultar la tabla si no hay datos
     }
 }
-function hideCards() {
-    const cards = document.querySelectorAll('.card');
-  cards.forEach(card => {
-    card.style.display = "none";
-  });
-  }
-  
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Define el nombre del modelo de almacenamiento y los datos del usuario
+    const modelStorage = "userData";
+    const userData = "someValue"; // Reemplaza esto con los datos del usuario que desees almacenar
+
+    // Crea una instancia de StorageGame y almacena los datos del usuario
+    const storage = new StorageGame(modelStorage);
+    storage.setStorage(userData);
+});
+
 
 

@@ -13,13 +13,13 @@ class Game {
     this.getServer = window.location.origin; //server path name
     this.folderPath = "/games_memory"; //name folder 
     this.serverPath = this.getServer + this.folderPath; //server path name
-    this.uriJson = this.serverPath + "/assets/doc/User.json"; // path data JSON
+    this.URL = "https://consumo-api-628e4-default-rtdb.firebaseio.com/api/user.json"; // path data JSON
     this.pathImg = this.serverPath + "/assets/img/memory/"; // path data imgs 
     this.pathImgDafault = this.serverPath + "/assets/img/memory/img_default.jpg"; // path data img default 
     //this.longBootstrap = 12 / level; // Changes Grid bootstrap - The level value is divided by 12 spaces on the grid
     this.newArrayGames = []; // New data matrix 
     this.arrayGamesCard = []; // New data matrix to create the cards
-    this.getDataJson();
+    //this.getDataJson();
     this.num = level; // Attribute level 
     this.max = 19; // Attribute for maximum array length 
     this.min = 0;// Attribute for min array length 
@@ -30,20 +30,24 @@ class Game {
     this.totalPoint = 0; //accumulating Value Points 
     this.contCardClass = "contCard";//This class container card
     this.objChronometer = new Chronometer(chor, speed, maxMilliseconds);
-    
-
+    this.gameStarted = false;
+    this.firstCardClicked = false;
+    this.storage = new StorageGame(storageModel); // Instancia de la clase StorageGame
+    this.getDataFromFirebase();
   }
 
-  //Method to read the JSON file, execute the setElements method sending an array of data
-  getDataJson() {
-    fetch(this.uriJson)
+  getDataFromFirebase() {
+    fetch(this.URL)
       .then(response => response.json())
       .then(data => {
         this.setElements(data);
-        this.objChronometer.startChronometer();
+      
+      })
+      
+      .catch(error => {
+        console.error("Error fetching data from Firebase:", error);
       });
   }
-
   //Method for constructing the data array for the game cards
   getRandomArray(min, max, count) {
     let contentGame = [];
@@ -68,8 +72,31 @@ class Game {
   }
 
   //This method is to create the elements dynamically, Receive an agreement, create cards
-  setElements(arraJson) {
+  // setElements(arraJson) {
 
+  //   let cards = "";
+  //   let cardsAux = "";
+  //   let cont = 0;
+  //   let row = this.num - 1;
+  //   this.contGame.innerHTML = "";
+  //   this.newArrayGames = arraJson;
+  //   const getNewArray = this.getRandomArray(this.min, this.max, this.maxCard);
+
+  //   for (let i = 0; i < getNewArray.length; i++) {
+  //     this.totalPointGame += getNewArray[i].valor; ///Accumulating Value Points
+  //     cardsAux += '<div class="col-2 pt-2 mx-auto ' + this.contCardClass + '"><div class="card card-size" style="width:9rem;height:15rem;overflow-y:hidden;"><img data-value="' + getNewArray[i].valor + '" data-src="' + this.pathImg + getNewArray[i].img + '" src="' + this.pathImgDafault + '" class="card-img-top back-face" alt="..."> <div class="card-body"><h5 class="card-title text-center mb-0" style="font-size: 1rem;">' + getNewArray[i].nombre + '</h5><p class="card-text text-center mb-0" style="font-size: 0.8rem;">' + getNewArray[i].valor + '</p></div></div></div>';
+  //     cont++;
+  //     if (row == cont - 1) {
+  //       cards += '<div class="row">' + cardsAux + '</div>';
+  //       cont = 0;
+  //       cardsAux = "";
+  //     }
+  //   }
+  //   this.contGame.innerHTML = cards;
+  //   this.changeElementImg();
+  // }
+
+  setElements(arraJson) {
     let cards = "";
     let cardsAux = "";
     let cont = 0;
@@ -77,9 +104,15 @@ class Game {
     this.contGame.innerHTML = "";
     this.newArrayGames = arraJson;
     const getNewArray = this.getRandomArray(this.min, this.max, this.maxCard);
-
+  
+    // Verifica si getNewArray está vacío o no antes de continuar
+    if (getNewArray.length === 0) {
+      console.error("El arreglo getNewArray está vacío.");
+      return;
+    }
+  
     for (let i = 0; i < getNewArray.length; i++) {
-      this.totalPointGame += getNewArray[i].valor; ///Accumulating Value Points
+      this.totalPointGame += getNewArray[i].valor;
       cardsAux += '<div class="col-2 pt-2 mx-auto ' + this.contCardClass + '"><div class="card card-size" style="width:9rem;height:15rem;overflow-y:hidden;"><img data-value="' + getNewArray[i].valor + '" data-src="' + this.pathImg + getNewArray[i].img + '" src="' + this.pathImgDafault + '" class="card-img-top back-face" alt="..."> <div class="card-body"><h5 class="card-title text-center mb-0" style="font-size: 1rem;">' + getNewArray[i].nombre + '</h5><p class="card-text text-center mb-0" style="font-size: 0.8rem;">' + getNewArray[i].valor + '</p></div></div></div>';
       cont++;
       if (row == cont - 1) {
@@ -91,29 +124,32 @@ class Game {
     this.contGame.innerHTML = cards;
     this.changeElementImg();
   }
+  
+
   //This method is to add event listener for container card, answer in the change de img 
   changeElementImg() {
-
-    this.contCardGame = document.querySelectorAll('.' + this.contCardClass);//Content card
+    this.contCardGame = document.querySelectorAll('.' + this.contCardClass);
     var pathDefault = this.pathImgDafault;
-    var gameStarted = false; // Inicializa la variable gameStarted
+    var gameStarted = false;
+    let firstCardClicked = false; // Agregamos una variable para rastrear si se ha hecho clic en la primera carta
 
     for (let i = 0; i < this.contCardGame.length; i++) {
       const objImg = this.contCardGame[i].querySelector('img');
       this.contCardGame[i].addEventListener('click', () => {
-          if (objImg.src == pathDefault) {
-              objImg.src = objImg.dataset.src;
-              this.setSelectCard(objImg);
-              // Aquí iniciamos el cronómetro al hacer clic en la primera carta
-              this.objChronometer.startChronometer(60); // Cambia 60 al tiempo establecido en segundos
+        if (objImg.src == pathDefault) {
+          objImg.src = objImg.dataset.src;
+          this.setSelectCard(objImg);
+          // Iniciar el cronómetro solo si el juego aún no ha comenzado y es la primera carta que se hace clic
+          if (!this.gameStarted && !this.firstCardClicked) {
+            this.objChronometer.startChronometer();
+            this.gameStarted = true;
+            this.firstCardClicked = true;
           }
-          if (!gameStarted) {
-              this.objChronometer.startChronometer();
-              gameStarted = true;
-          }
+        }
       });
+    }
   }
-}
+
   
 
   //This method is  
@@ -122,6 +158,12 @@ class Game {
     if (this.selected) {
       this.selected = false;
       this.selectedCard[0] = obj;
+      // Iniciar el cronómetro solo si es la primera carta seleccionada y el juego aún no ha comenzado
+      if (!this.gameStarted && !this.firstCardClicked) {
+        this.objChronometer.startChronometer();
+        this.gameStarted = true;
+        this.firstCardClicked = true;
+      }
     } else {
       this.selectedCard[1] = obj;
       this.selected = true;
@@ -169,26 +211,26 @@ class Game {
     this.progCont.style.width = dataProgress + "%";
 
   }
-  
+
   // En el método finishGame()
 
   finishGame() {
     // Detener el cronómetro
     this.objChronometer.clearChronometer();
-    
+
     const congratsMessage = document.getElementById('congratsMessage');
     congratsMessage.style.display = 'block'; // Mostrar el mensaje de felicitaciones y el formulario
-  
+
     const playerNameInput = document.getElementById('playerNameInput');
     const saveScoreBtn = document.getElementById('submitScoreButton');
     const leaderboard = document.getElementById('leaderboard');
-  
+
     saveScoreBtn.addEventListener('click', () => {
       const playerName = playerNameInput.value;
       if (playerName) {
         const playerScore = this.totalPoint;
         const playerData = { name: playerName.toUpperCase(), score: playerScore };
-  
+
         let scores = JSON.parse(localStorage.getItem('scores')) || [];
         scores.push(playerData);
         scores.sort((a, b) => b.score - a.score);
@@ -200,8 +242,55 @@ class Game {
       } else {
         alert("Debes ingresar tu nombre para registrar tu puntuación.");
       }
+      const finalScore = this.calculateFinalScore();
+      console.log('Final Score:', finalScore);
     });
   }
+
+  calculateFinalScore() {
+    // Obtener el tiempo total transcurrido en milisegundos
+    const totalTimeMilliseconds = this.objChronometer.conT * this.speed;
+    console.log('Total Time (ms):', totalTimeMilliseconds);
+
+    // Calcular la puntuación basada en el tiempo (por ejemplo, 1 punto por cada segundo)
+    const timeScore = Math.floor(totalTimeMilliseconds / 1000);
+    console.log('Time Score:', timeScore);
+
+    // Sumar la puntuación de todas las cartas encontradas
+    const cardsScore = this.totalPoint;
+    console.log('Cards Score:', cardsScore);
+
+    // Calcular la puntuación final combinando tiempo y puntuación de las cartas
+    const finalScore = timeScore + cardsScore;
+    console.log('Final Score:', finalScore);
+
+    // Obtener los datos del almacenamiento local y manejar el formato JSON
+    const storedData = this.storage.getStorage();
+    console.log('Tipo de datos de storedData:', typeof storedData);
+    console.log('Contenido de storedData:', storedData);
+
+    if (!storedData) {
+      console.error('Los datos almacenados están vacíos o son indefinidos.');
+      return;
+    }
+
+    let userData = {};
+    try {
+      userData = JSON.parse(storedData) || {};
+    } catch (error) {
+      console.error('Error al analizar JSON desde el almacenamiento:', error);
+      return;
+    }
+
+    // Agregar la puntuación final a los datos del usuario y almacenarlos en el almacenamiento local
+    userData[this.modelStorage] = {
+      user: "Nombre del usuario", // Puedes obtener el nombre del usuario de alguna entrada de formulario
+      points: finalScore
+    };
+    this.storage.setStorage(JSON.stringify(userData));
+
+    return finalScore;
+  }
+
+
 }
-
-
